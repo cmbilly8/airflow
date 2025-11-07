@@ -100,7 +100,7 @@ export const Tasks = () => {
         displayMode="card"
         isFetching={isFetching}
         isLoading={isLoading}
-        modelName={translate("task_one")}
+        modelName="common:task"
         total={data ? data.total_entries : 0}
       />
     </Box>

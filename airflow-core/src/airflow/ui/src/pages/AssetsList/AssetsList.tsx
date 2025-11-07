@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { Box, Heading, Link, VStack } from "@chakra-ui/react";
+import { Box, Link, VStack } from "@chakra-ui/react";
 import type { ColumnDef } from "@tanstack/react-table";
 import { useTranslation } from "react-i18next";
 import { useSearchParams, Link as RouterLink } from "react-router-dom";
@@ -104,6 +104,7 @@ export const AssetsList = () => {
   const [sort] = sorting;
   const orderBy = sort ? [`${sort.desc ? "-" : ""}${sort.id}`] : undefined;
 
+
   const { data, error, isLoading } = useAssetServiceGetAssets({
     limit: pagination.pageSize,
     namePattern,
@@ -133,10 +134,6 @@ export const AssetsList = () => {
           onChange={handleSearchChange}
           placeHolder={translate("searchPlaceholder")}
         />
-
-        <Heading py={3} size="md">
-          {data?.total_entries} {translate("common:asset", { count: data?.total_entries })}
-        </Heading>
       </VStack>
       <Box overflow="auto">
         <DataTable
@@ -145,8 +142,9 @@ export const AssetsList = () => {
           errorMessage={<ErrorAlert error={error} />}
           initialState={tableURLState}
           isLoading={isLoading}
-          modelName={translate("common:asset_one")}
+          modelName="common:asset"
           onStateChange={setTableURLState}
+          showRowCountHeading
           total={data?.total_entries}
         />
       </Box>

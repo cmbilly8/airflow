@@ -20,12 +20,34 @@ import { Text } from "@chakra-ui/react";
 import type { ColumnDef, PaginationState } from "@tanstack/react-table";
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { ChakraWrapper } from "src/utils/ChakraWrapper.tsx";
 
 import { DataTable } from "./DataTable.tsx";
 import type { CardDef } from "./types.ts";
+
+const mockTranslate = vi.fn((key: string, options?: Record<string, unknown>) => {
+  if (!options || Object.keys(options).length === 0) {
+    return key;
+  }
+
+  const formattedOptions = Object.entries(options)
+    .map(([optionKey, value]) => `${optionKey}:${value as string | number}`)
+    .join(", ");
+
+  return `${key}(${formattedOptions})`;
+});
+
+vi.mock("react-i18next", () => ({
+  useTranslation: () => ({
+    t: mockTranslate,
+  }),
+}));
+
+beforeEach(() => {
+  mockTranslate.mockClear();
+});
 
 const columns: Array<ColumnDef<{ name: string }>> = [
   {
@@ -158,5 +180,34 @@ describe("DataTable", () => {
     );
 
     expect(screen.getAllByTestId("skeleton")).toHaveLength(5);
+  });
+
+  it("translates the row count heading using the provided model name", () => {
+    render(
+      <DataTable
+        columns={columns}
+        data={data}
+        initialState={{ pagination, sorting: [] }}
+        modelName="common:taskInstance"
+        showRowCountHeading
+        total={2}
+      />,
+      {
+        wrapper: ChakraWrapper,
+      },
+    );
+
+    expect(screen.getByText("2 common:taskInstance(count:2)")).toBeInTheDocument();
+  });
+
+  it("falls back to translating the no items found message with the model name", () => {
+    render(
+      <DataTable columns={columns} data={[]} modelName="common:dag" />,
+      {
+        wrapper: ChakraWrapper,
+      },
+    );
+
+    expect(screen.getByText("noItemsFound(modelName:common:dag(count:0))")).toBeInTheDocument();
   });
 });

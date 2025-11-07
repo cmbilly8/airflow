@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { Heading, Link, VStack } from "@chakra-ui/react";
+import { Link, VStack } from "@chakra-ui/react";
 import type { ColumnDef } from "@tanstack/react-table";
 import type { TFunction } from "i18next";
 import { useCallback } from "react";
@@ -242,11 +242,6 @@ export const HITLTaskInstances = () => {
 
   return (
     <VStack align="start">
-      {!Boolean(dagId) && !Boolean(runId) && !Boolean(taskId) ? (
-        <Heading size="md">
-          {data?.total_entries} {translate("requiredAction", { count: data?.total_entries })}
-        </Heading>
-      ) : undefined}
       <HITLFilters onResponseChange={handleResponseChange} />
       <DataTable
         columns={taskInstanceColumns({
@@ -259,8 +254,9 @@ export const HITLTaskInstances = () => {
         errorMessage={<ErrorAlert error={error} />}
         initialState={tableURLState}
         isLoading={isLoading}
-        modelName={translate("requiredAction_other")}
+        modelName="hitl:requiredAction"
         onStateChange={setTableURLState}
+        showRowCountHeading
         total={data?.total_entries}
       />
     </VStack>

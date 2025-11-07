@@ -19,7 +19,6 @@
  * under the License.
  */
 import {
-  Heading,
   HStack,
   Skeleton,
   VStack,
@@ -299,9 +298,6 @@ export const DagsList = () => {
         <DagsFilters />
         <HStack justifyContent="space-between">
           <HStack>
-            <Heading py={3} size="md">
-              {`${data?.total_entries ?? 0} ${translate("dag", { count: data?.total_entries ?? 0 })}`}
-            </Heading>
             <DAGImportErrors iconOnly />
           </HStack>
           {display === "card" ? (
@@ -319,8 +315,9 @@ export const DagsList = () => {
           errorMessage={<ErrorAlert error={error} />}
           initialState={tableURLState}
           isLoading={isLoading}
-          modelName={translate("dag_one")}
+          modelName="common:dag"
           onStateChange={setTableURLState}
+          showRowCountHeading
           skeletonCount={display === "card" ? 5 : undefined}
           total={data?.total_entries ?? 0}
         />

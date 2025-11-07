@@ -61,7 +61,7 @@ const ActionAccordion = ({ affectedTasks, note, setNote }: Props) => {
                 columns={getColumns(translate)}
                 data={affectedTasks.task_instances}
                 displayMode="table"
-                modelName={translate("common:taskInstance_other")}
+                modelName="common:taskInstance"
                 noRowsMessage={translate("dags:runAndTaskActions.affectedTasks.noItemsFound")}
                 total={affectedTasks.total_entries}
               />

@@ -128,7 +128,7 @@ export const Backfills = () => {
         data={data ? data.backfills : []}
         isFetching={isFetching}
         isLoading={isLoading}
-        modelName={translate("backfill_one")}
+        modelName="common:backfill"
         onStateChange={setTableURLState}
         total={data ? data.total_entries : 0}
       />
